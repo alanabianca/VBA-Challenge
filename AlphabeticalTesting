@@ -1,0 +1,34 @@
+Sub ticker()
+
+'Row count 22771
+
+Dim stock As String
+Dim openprice As Double
+Dim closeprice As Double
+Dim volume As Integer
+Dim row As Integer
+Dim nextstock As String
+
+row = 2
+
+For i = 2 To 1000
+
+       stock = Cells(i, 1).Value
+       nextstock = Cells(i + 1, 1).Value
+       openprice = Cells(i, 3).Value
+       closeprice = Cells(i, 6).Value
+       
+         Cells(row, 9).Value = stock
+         Cells(row, 10).Value = openprice
+         
+       If StrComp(stock, nextstock, 1) <> 0 Then
+       
+       Cells(row, 11).Value = closeprice
+       row = row + 1
+       Else
+       
+       End If
+
+Next i
+
+End Sub
