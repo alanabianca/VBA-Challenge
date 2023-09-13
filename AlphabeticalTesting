@@ -1,5 +1,7 @@
 Sub tickerthing()
 
+For Each ws In Worksheets
+
 Dim stock As String
 Dim nextstock As String
 Dim openprice As Double
@@ -8,57 +10,56 @@ Dim row As Integer
 Dim lastrow As Integer
 Dim totalvolume As LongLong
 
-
 row = 2
-lastrow = Cells(Rows.Count, 1).End(xlUp).row
+lastrow = ws.Cells(Rows.Count, 1).End(xlUp).row
 
 'Outputting my headers
 
-Cells(1, 9).Value = "Ticker"
-Cells(1, 10).Value = "Yearly Change"
-Cells(1, 11).Value = "Percent Change"
-Cells(1, 12).Value = "Total Stock Volume"
+ws.Cells(1, 9).Value = "Ticker"
+ws.Cells(1, 10).Value = "Yearly Change"
+ws.Cells(1, 11).Value = "Percent Change"
+ws.Cells(1, 12).Value = "Total Stock Volume"
 
 'Grabbing the first values
 
-stock = Cells(2, 1).Value
-openprice = Cells(2, 3).Value
+stock = ws.Cells(2, 1).Value
+openprice = ws.Cells(2, 3).Value
 totalvolume = 0
 
 'Looping through each row
 
 For i = 2 To lastrow
-     nextstock = Cells(i + 1, 1).Value
+     nextstock = ws.Cells(i + 1, 1).Value
      
-     closeprice = Cells(i, 6).Value
+     closeprice = ws.Cells(i, 6).Value
      
-     totalvolume = totalvolume + Cells(i, 7).Value
+     totalvolume = totalvolume + ws.Cells(i, 7).Value
      
      If (StrComp(stock, nextstock, 1) <> 0) Then
             
             'Print out the ticker, yearly change, and volume
             
-            Cells(row, 9).Value = stock
-            Cells(row, 10).Value = closeprice - openprice
-            Cells(row, 12).Value = totalvolume
+            ws.Cells(row, 9).Value = stock
+            ws.Cells(row, 10).Value = closeprice - openprice
+            ws.Cells(row, 12).Value = totalvolume
             
             'Percent Change
             
-            Range("K2:K" & lastrow).NumberFormat = "0.00%"
-            Cells(row, 11).Value = (openprice - closeprice) / openprice
+            ws.Range("K2:K" & lastrow).NumberFormat = "0.00%"
+            ws.Cells(row, 11).Value = (openprice - closeprice) / openprice
             
             'Color the yearly change
             
-             If (Cells(row, 10).Value >= 0) Then
-                  Cells(row, 10).Interior.ColorIndex = 4
+             If (ws.Cells(row, 10).Value >= 0) Then
+                  ws.Cells(row, 10).Interior.ColorIndex = 4
             Else
-                   Cells(row, 10).Interior.ColorIndex = 3
+                   ws.Cells(row, 10).Interior.ColorIndex = 3
             End If
             
             'Set up the next stock values
             
-            stock = Cells(i + 1, 1).Value
-            openprice = Cells(i + 1, 3).Value
+            stock = ws.Cells(i + 1, 1).Value
+            openprice = ws.Cells(i + 1, 3).Value
            totalvolume = 0
             row = row + 1
 
@@ -68,9 +69,9 @@ Next i
 
 'Adding functionality headers
 
-Cells(2, 15).Value = "Greatest % increase"
-Cells(3, 15).Value = "Greatest % decrease"
-Cells(4, 15).Value = "Greatest total volume"
+ws.Cells(2, 15).Value = "Greatest % increase"
+ws.Cells(3, 15).Value = "Greatest % decrease"
+ws.Cells(4, 15).Value = "Greatest total volume"
 
 'Calculating functionalities
 
@@ -78,38 +79,41 @@ Dim max As Double
 Dim min As Double
 Dim greattotal As LongLong
 
-max = Cells(2, 11).Value
-min = Cells(2, 11).Value
-greattotal = Cells(2, 12).Value
+max = ws.Cells(2, 11).Value
+min = ws.Cells(2, 11).Value
+greattotal = ws.Cells(2, 12).Value
 
 'Calculates max
 
 For i = 2 To lastrow
-    If (Cells(i, 11).Value > max) Then
-       max = Cells(i, 11).Value
+    If (ws.Cells(i, 11).Value > max) Then
+       max = ws.Cells(i, 11).Value
     End If
 Next i
 
 'Calculates min
 
 For i = 2 To lastrow
-    If (Cells(i, 11).Value < min) Then
-       min = Cells(i, 11).Value
+    If (ws.Cells(i, 11).Value < min) Then
+       min = ws.Cells(i, 11).Value
     End If
 Next i
 
 'Calculate Greatest total volume
 
 For i = 2 To lastrow
-    If (Cells(i, 12).Value > greattotal) Then
-       greattotal = Cells(i, 12).Value
+    If (ws.Cells(i, 12).Value > greattotal) Then
+       greattotal = ws.Cells(i, 12).Value
     End If
 Next i
 
 'Prints three values
-Range("P2:P3").NumberFormat = "0.00%"
-Cells(2, 16).Value = max
-Cells(3, 16).Value = min
-Cells(4, 16).Value = greattotal
-   
+ws.Range("P2:P3").NumberFormat = "0.00%"
+ws.Cells(2, 16).Value = max
+ws.Cells(3, 16).Value = min
+ws.Cells(4, 16).Value = greattotal
+
+Next ws
+
 End Sub
+
